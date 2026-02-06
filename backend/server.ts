@@ -15,16 +15,32 @@ import { redis } from './services/redis.service';
 
 dotenv.config();
 
+const CORS_ORIGIN = process.env.CORS_ORIGIN;
+const CORS_METHODS: string[] = ['GET', 'POST', 'DELETE', 'OPTIONS'];
+const CORS_ALLOWED_HEADERS = ['Content-Type', 'Accept'];
+const CORS_CREDENTIALS = Boolean(CORS_ORIGIN);
+
+const corsOptions = {
+  origin: CORS_ORIGIN ?? false,
+  methods: CORS_METHODS,
+  allowedHeaders: CORS_ALLOWED_HEADERS,
+  credentials: CORS_CREDENTIALS,
+  optionsSuccessStatus: 204,
+};
+
 const app = express();
 const httpServer = createServer(app);
 
 const io = new Server(httpServer, {
   cors: {
-    origin: process.env.CORS_ORIGIN ?? '*',
+    origin: CORS_ORIGIN ?? false,
+    methods: CORS_METHODS,
+    allowedHeaders: CORS_ALLOWED_HEADERS,
+    credentials: CORS_CREDENTIALS,
   },
 });
 
-app.use(cors());
+app.use(cors(corsOptions));
 app.use(express.json());
 
 app.post('/api/session', async (req, res) => {
