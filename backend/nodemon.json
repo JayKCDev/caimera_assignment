@@ -1,0 +1,5 @@
+{
+  "watch": ["*.ts", "services", "socket", "utils"],
+  "ext": "ts,json",
+  "ignore": ["dist", "logs", "node_modules"]
+}
